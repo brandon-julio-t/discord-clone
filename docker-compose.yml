@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: discord-clone-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: discord-clone
+    command: postgres -c wal_level=logical
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  electric:
+    image: electricsql/electric:latest
+    container_name: discord-clone-electric
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/discord-clone
+      # Not suitable for production. Only use insecure mode in development or if you've otherwise secured the Electric API.
+      # See https://electric-sql.com/docs/guides/security
+      ELECTRIC_INSECURE: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    name: discord-clone-postgres-data
