@@ -2,7 +2,9 @@ import { env } from "~/env";
 
 export async function GET(request: Request) {
   const url = new URL(`${request.url}`);
-  const electricSqlBackendUrl = new URL(env.ELECTRIC_SQL_BACKEND_URL);
+  const electricSqlBackendUrl = new URL(
+    `${env.ELECTRIC_SQL_BACKEND_URL}/v1/shape`,
+  );
 
   url.searchParams.forEach((value, key) => {
     electricSqlBackendUrl.searchParams.set(key, value);

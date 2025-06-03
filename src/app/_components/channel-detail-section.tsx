@@ -5,6 +5,7 @@ import React from "react";
 import { Separator } from "~/components/ui/separator";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Skeleton } from "~/components/ui/skeleton";
+import { env } from "~/env";
 
 export const ChannelDetailSection: React.ComponentType = () => {
   const searchParams = useSearchParams();
@@ -12,7 +13,7 @@ export const ChannelDetailSection: React.ComponentType = () => {
   const channelId = searchParams.get("channelId");
 
   const { data, isLoading } = useShape<Channel>({
-    url: "http://localhost:3001/api/electric-sql",
+    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
     params: {
       table: `"Channel"`,
       where: `"id" = '${channelId}'`,
