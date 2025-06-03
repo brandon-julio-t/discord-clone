@@ -55,15 +55,6 @@ export const PageView: React.ComponentType<{
     },
   });
 
-  const test = useShape({
-    url: "http://localhost:3001/api/electric-sql",
-    params: {
-      table: `"ChannelView"`,
-    },
-  });
-
-  console.log(test);
-
   return (
     <SidebarProvider>
       <Sidebar>
