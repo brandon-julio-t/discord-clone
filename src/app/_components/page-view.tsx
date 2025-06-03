@@ -39,6 +39,7 @@ import { useIsMobile } from "~/hooks/use-mobile";
 import { ChannelDetailSection } from "./channel-detail-section";
 import { ChannelSidebarMenuItem } from "./channel-sidebar-menu-item";
 import { CreateChannelForm } from "./create-channel-form";
+import { env } from "~/env";
 
 export const PageView: React.ComponentType<{
   user: User;
@@ -49,7 +50,7 @@ export const PageView: React.ComponentType<{
     React.useState(false);
 
   const { data, isLoading } = useShape<Channel>({
-    url: "http://localhost:3001/api/electric-sql",
+    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
     params: {
       table: `"Channel"`,
     },
