@@ -32,6 +32,9 @@ A modern Discord clone built with Next.js 15, React 19, and TypeScript. This pro
 # Install dependencies
 bun install
 
+# Start Docker containers (PostgreSQL and Electric SQL)
+docker compose up -d
+
 # Run database migrations
 bun prisma migrate dev
 
