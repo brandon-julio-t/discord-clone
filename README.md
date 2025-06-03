@@ -1,3 +1,50 @@
+# Discord Clone
+
+A modern Discord clone built with Next.js 15, React 19, and TypeScript. This project replicates Discord's core features with a focus on real-time communication, server management, and user interactions.
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
+- **UI**: [React 19](https://react.dev/) + [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Authentication**: [Better Auth](https://better-auth.dev/)
+- **Database**: [Prisma](https://www.prisma.io/) with [PostgreSQL](https://www.postgresql.org/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest) (React Query)
+- **API Layer**: [tRPC](https://trpc.io/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with modern animations
+- **Form Handling**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) validation
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (built on Radix UI primitives)
+- **Real-time Features**: [Electric SQL](https://electric-sql.com/)
+
+## ✨ Features
+
+- Modern, responsive UI with dark/light mode support
+- Real-time messaging and presence
+- Server and channel management
+- User authentication and authorization
+- Type-safe API with tRPC
+- Form validation and error handling
+- Optimized performance with Next.js 15
+- Full TypeScript support
+
+## 🛠️ Development
+
+```bash
+# Install dependencies
+bun install
+
+# Run database migrations
+bun prisma migrate dev
+
+# Run development server
+bun run dev
+```
+
+## 📝 License
+
+MIT License - feel free to use this project for learning and development purposes.
+
+---
+
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
