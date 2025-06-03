@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:alpine
     container_name: discord-clone-postgres
     restart: unless-stopped
     environment:
