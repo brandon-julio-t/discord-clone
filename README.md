@@ -4,13 +4,9 @@ A modern Discord clone built with Next.js 15, React 19, and TypeScript. This pro
 
 ## ✨ Showcase
 
-### End-to-End Demo
+https://github.com/user-attachments/assets/2bb8238c-769f-4139-895b-40999b5533c8
 
-![End-to-End Demo](./public/demos/e2e.mp4)
-
-### Channel Management
-
-![Channel Management](./public/demos/delete-channels.mp4)
+https://github.com/user-attachments/assets/44a0bd8b-87b7-4134-b194-20187de633d6
 
 ## 🚀 Tech Stack
 
