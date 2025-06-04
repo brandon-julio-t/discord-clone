@@ -4,6 +4,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  //   await prisma.$transaction([
+  //     prisma.channelMessage.deleteMany(),
+  //     prisma.channel.deleteMany(),
+  //   ]);
+  //   return;
+
   const users = await prisma.user.findMany();
 
   console.log("Creating channels...");
