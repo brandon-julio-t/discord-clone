@@ -66,7 +66,7 @@ export default function RegisterPage() {
           {
             onSuccess: () => {
               toast.success("Account created successfully!");
-              router.push("/auth/login");
+              router.push("/");
             },
             onError: (ctx) => {
               console.error(ctx.error);
