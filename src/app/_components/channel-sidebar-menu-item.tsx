@@ -1,4 +1,10 @@
-import { HashIcon, MoreHorizontalIcon, PenIcon, TrashIcon } from "lucide-react";
+import {
+  HashIcon,
+  Loader2Icon,
+  MoreHorizontalIcon,
+  PenIcon,
+  TrashIcon,
+} from "lucide-react";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
 import { SidebarMenuAction } from "~/components/ui/sidebar";
 
@@ -55,7 +61,11 @@ export const ChannelSidebarMenuItem: React.ComponentType<{
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton isActive={channel.id === channelId} asChild>
+      <SidebarMenuButton
+        isActive={channel.id === channelId}
+        disabled={deleteChannelMutation.isPending}
+        asChild
+      >
         <Link
           href={{
             pathname: "/",
@@ -69,8 +79,12 @@ export const ChannelSidebarMenuItem: React.ComponentType<{
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuAction>
-            <MoreHorizontalIcon />
+          <SidebarMenuAction disabled={deleteChannelMutation.isPending}>
+            {deleteChannelMutation.isPending ? (
+              <Loader2Icon className="animate-spin" />
+            ) : (
+              <MoreHorizontalIcon />
+            )}
           </SidebarMenuAction>
         </DropdownMenuTrigger>
 
