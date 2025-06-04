@@ -40,10 +40,13 @@ import { ChannelDetailSection } from "./channel-detail-section";
 import { ChannelSidebarMenuItem } from "./channel-sidebar-menu-item";
 import { CreateChannelForm } from "./create-channel-form";
 import { env } from "~/env";
+import { authClient } from "~/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export const PageView: React.ComponentType<{
   user: User;
 }> = ({ user }) => {
+  const router = useRouter();
   const isMobile = useIsMobile();
 
   const [openCreateChannelDialog, setOpenCreateChannelDialog] =
@@ -76,25 +79,6 @@ export const PageView: React.ComponentType<{
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Dialog
-                open={openCreateChannelDialog}
-                onOpenChange={setOpenCreateChannelDialog}
-              >
-                <DialogTrigger asChild>
-                  <SidebarMenuButton>
-                    <PlusIcon />
-                    <span>New Channel</span>
-                  </SidebarMenuButton>
-                </DialogTrigger>
-                <DialogContent>
-                  <CreateChannelForm
-                    onSuccess={() => setOpenCreateChannelDialog(false)}
-                    onCancel={() => setOpenCreateChannelDialog(false)}
-                  />
-                </DialogContent>
-              </Dialog>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
@@ -102,6 +86,26 @@ export const PageView: React.ComponentType<{
             <SidebarGroupLabel>Channels</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
+                <SidebarMenuItem>
+                  <Dialog
+                    open={openCreateChannelDialog}
+                    onOpenChange={setOpenCreateChannelDialog}
+                  >
+                    <DialogTrigger asChild>
+                      <SidebarMenuButton>
+                        <PlusIcon />
+                        <span>New Channel</span>
+                      </SidebarMenuButton>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <CreateChannelForm
+                        onSuccess={() => setOpenCreateChannelDialog(false)}
+                        onCancel={() => setOpenCreateChannelDialog(false)}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                </SidebarMenuItem>
+
                 {isLoading
                   ? Array.from({ length: 10 }).map((_, index) => (
                       <SidebarMenuSkeleton key={index} />
@@ -158,7 +162,12 @@ export const PageView: React.ComponentType<{
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await authClient.signOut();
+                      router.push("/auth/login");
+                    }}
+                  >
                     <LogOutIcon />
                     Log out
                   </DropdownMenuItem>
@@ -170,7 +179,7 @@ export const PageView: React.ComponentType<{
       </Sidebar>
 
       <SidebarInset>
-        <ChannelDetailSection />
+        <ChannelDetailSection user={user} />
       </SidebarInset>
     </SidebarProvider>
   );
