@@ -34,5 +34,5 @@ services:
         condition: service_healthy
 
 volumes:
-  postgres-data:
+  postgres_data:
     name: slack-clone-postgres-data
