@@ -44,24 +44,7 @@ bun prisma migrate dev
 
 # Setup Caddy reverse proxy to fix electric sql performance issue
 # https://electric-sql.com/docs/guides/troubleshooting#slow-shapes-mdash-why-are-my-shapes-slow-in-the-browser-in-local-development
-caddy run \
-    --config - \
-    --adapter caddyfile \
-    <<EOF
-localhost:3002 {
-  reverse_proxy localhost:3000
-  encode {
-    gzip
-  }
-}
-
-localhost:3003 {
-  reverse_proxy localhost:3001
-  encode {
-    gzip
-  }
-}
-EOF
+caddy run
 
 # Start Docker containers (PostgreSQL and Electric SQL)
 docker compose up
@@ -69,7 +52,7 @@ docker compose up
 # Run development server
 bun run dev
 
-# Visit https://localhost:3003
+# Visit https://localhost:4001
 ```
 
 ## 📝 License
