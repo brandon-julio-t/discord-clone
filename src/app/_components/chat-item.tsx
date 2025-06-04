@@ -8,14 +8,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
   AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogCancel,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
+  AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -29,7 +29,6 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { updateMessageSchema } from "~/domains/message/schema";
 import { env } from "~/env";
-import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 export const ChatItem: React.ComponentType<{
@@ -89,7 +88,7 @@ export const ChatItem: React.ComponentType<{
   });
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="hover:bg-muted/50 flex flex-row gap-2 p-3">
       <Avatar>
         <AvatarImage src={messageUser?.image ?? ""} />
         <AvatarFallback>
@@ -97,9 +96,9 @@ export const ChatItem: React.ComponentType<{
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-col gap-2">
+      <div className="group relative flex w-full flex-col gap-2">
         <section className="flex flex-row flex-wrap items-baseline gap-2">
-          <p className="text-sm leading-(--text-base) font-medium">
+          <p className="text-primary text-sm leading-(--text-base)">
             {messageUser?.name}
           </p>
 
@@ -115,13 +114,7 @@ export const ChatItem: React.ComponentType<{
         </section>
 
         <Form {...form}>
-          <section
-            className={cn(
-              "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
-              isMe ? "bg-primary text-primary-foreground" : "bg-muted",
-              isEditing && "p-0",
-            )}
-          >
+          <section className="flex flex-col gap-2 rounded-lg text-sm whitespace-pre-wrap">
             {isEditing ? (
               <Form {...form}>
                 <FormField
@@ -147,81 +140,83 @@ export const ChatItem: React.ComponentType<{
           </section>
         </Form>
 
-        <section className="text-muted-foreground -mt-1 -ml-2 flex flex-row gap-0.5">
-          {isEditing ? (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  setIsEditing(false);
-                  form.reset();
-                }}
-                disabled={updateMessageMutation.isPending}
-              >
-                <XIcon />
-              </Button>
+        {isMe && (
+          <section className="text-muted-foreground absolute top-0 right-0 hidden flex-row group-hover:flex [&>*:first-child]:rounded-r-none [&>*:last-child]:rounded-l-none">
+            {isEditing ? (
+              <>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => {
+                    setIsEditing(false);
+                    form.reset();
+                  }}
+                  disabled={updateMessageMutation.isPending}
+                >
+                  <XIcon />
+                </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onSubmit}
-                disabled={updateMessageMutation.isPending}
-              >
-                <CheckIcon />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsEditing(true)}
-                disabled={deleteMessageMutation.isPending}
-              >
-                <PencilIcon />
-              </Button>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={onSubmit}
+                  disabled={updateMessageMutation.isPending}
+                >
+                  <CheckIcon />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => setIsEditing(true)}
+                  disabled={deleteMessageMutation.isPending}
+                >
+                  <PencilIcon />
+                </Button>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    disabled={deleteMessageMutation.isPending}
-                  >
-                    <TrashIcon />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your message.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      size="icon"
                       disabled={deleteMessageMutation.isPending}
                     >
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      disabled={deleteMessageMutation.isPending}
-                      onClick={() =>
-                        deleteMessageMutation.mutate({ id: message.id })
-                      }
-                    >
-                      {deleteMessageMutation.isPending
-                        ? "Deleting..."
-                        : "Delete"}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </>
-          )}
-        </section>
+                      <TrashIcon />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your message.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel
+                        disabled={deleteMessageMutation.isPending}
+                      >
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        disabled={deleteMessageMutation.isPending}
+                        onClick={() =>
+                          deleteMessageMutation.mutate({ id: message.id })
+                        }
+                      >
+                        {deleteMessageMutation.isPending
+                          ? "Deleting..."
+                          : "Delete"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            )}
+          </section>
+        )}
       </div>
     </div>
   );

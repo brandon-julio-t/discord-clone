@@ -87,9 +87,9 @@ export const ChannelDetailChatSection: React.ComponentType<{
 
   return (
     <Form {...form}>
-      <section className="flex flex-1 flex-col justify-end gap-4 px-2 py-4">
+      <section className="flex flex-1 flex-col justify-end overflow-y-auto">
         {!messagesShape.data.length ? (
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center py-4">
             <p className="text-muted-foreground text-sm">
               No messages yet. Be the first to send a message!
             </p>
