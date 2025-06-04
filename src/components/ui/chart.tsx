@@ -105,9 +105,6 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
-type ValueType = number;
-type NameType = string;
-
 interface PayloadItem {
   dataKey: string;
   name?: string;
