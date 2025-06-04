@@ -31,7 +31,7 @@ import { updateMessageSchema } from "~/domains/message/schema";
 import { env } from "~/env";
 import { api } from "~/trpc/react";
 
-export const ChatItem: React.ComponentType<{
+export const ChannelMessageChatItem: React.ComponentType<{
   message: ChannelMessage;
   user: BetterAuthUser;
 }> = ({ message, user }) => {

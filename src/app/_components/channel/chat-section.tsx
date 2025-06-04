@@ -18,9 +18,9 @@ import { Textarea } from "~/components/ui/textarea";
 import { createMessageSchema } from "~/domains/message/schema";
 import { env } from "~/env";
 import { api } from "~/trpc/react";
-import { ChatItem } from "./chat-item";
+import { ChannelMessageChatItem } from "../channel-message/chat-item";
 
-export const ChannelDetailChatSection: React.ComponentType<{
+export const ChannelChatSection: React.ComponentType<{
   channelId: string;
   user: User;
 }> = ({ channelId, user }) => {
@@ -96,7 +96,11 @@ export const ChannelDetailChatSection: React.ComponentType<{
           </div>
         ) : (
           messagesShape.data.map((message) => (
-            <ChatItem key={message.id} message={message} user={user} />
+            <ChannelMessageChatItem
+              key={message.id}
+              message={message}
+              user={user}
+            />
           ))
         )}
       </section>

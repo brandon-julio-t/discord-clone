@@ -6,10 +6,10 @@ import { Separator } from "~/components/ui/separator";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Skeleton } from "~/components/ui/skeleton";
 import { env } from "~/env";
-import { ChannelDetailChatSection } from "./channel-detail-chat-section";
+import { ChannelChatSection } from "./chat-section";
 import type { User } from "better-auth";
 
-export const ChannelDetailSection: React.ComponentType<{
+export const ChannelMainSection: React.ComponentType<{
   user: User;
 }> = ({ user }) => {
   const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ export const ChannelDetailSection: React.ComponentType<{
       </header>
 
       {channelId && channel && (
-        <ChannelDetailChatSection channelId={channelId} user={user} />
+        <ChannelChatSection channelId={channelId} user={user} />
       )}
     </main>
   );

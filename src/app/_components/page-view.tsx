@@ -36,9 +36,9 @@ import {
   SidebarProvider,
 } from "~/components/ui/sidebar";
 import { useIsMobile } from "~/hooks/use-mobile";
-import { ChannelDetailSection } from "./channel-detail-section";
-import { ChannelSidebarMenuItem } from "./channel-sidebar-menu-item";
-import { CreateChannelForm } from "./create-channel-form";
+import { ChannelMainSection } from "./channel/main-section";
+import { ChannelSidebarMenuItem } from "./channel/sidebar-menu-item";
+import { CreateChannelForm } from "./channel/create-channel-form";
 import { env } from "~/env";
 import { authClient } from "~/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -181,7 +181,7 @@ export const PageView: React.ComponentType<{
       </Sidebar>
 
       <SidebarInset>
-        <ChannelDetailSection user={user} />
+        <ChannelMainSection user={user} />
       </SidebarInset>
     </SidebarProvider>
   );
