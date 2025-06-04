@@ -2,6 +2,16 @@
 
 A modern Discord clone built with Next.js 15, React 19, and TypeScript. This project replicates Discord's core features with a focus on real-time communication, server management, and user interactions.
 
+## ✨ Showcase
+
+### End-to-End Demo
+
+![End-to-End Demo](./public/demos/e2e.mp4)
+
+### Channel Management
+
+![Channel Management](./public/demos/delete-channels.mp4)
+
 ## 🚀 Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) with App Router
@@ -14,6 +24,7 @@ A modern Discord clone built with Next.js 15, React 19, and TypeScript. This pro
 - **Form Handling**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) validation
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (built on Radix UI primitives)
 - **Real-time Features**: [Electric SQL](https://electric-sql.com/)
+- **HTTP/2 Development Server**: [Caddy](https://caddyserver.com/) (reverse proxy for local development)
 
 ## ✨ Features
 
@@ -32,14 +43,37 @@ A modern Discord clone built with Next.js 15, React 19, and TypeScript. This pro
 # Install dependencies
 bun install
 
-# Start Docker containers (PostgreSQL and Electric SQL)
-docker compose up -d
-
 # Run database migrations
 bun prisma migrate dev
 
+# Setup Caddy reverse proxy to fix electric sql performance issue
+# https://electric-sql.com/docs/guides/troubleshooting#slow-shapes-mdash-why-are-my-shapes-slow-in-the-browser-in-local-development
+caddy run \
+    --config - \
+    --adapter caddyfile \
+    <<EOF
+localhost:3002 {
+  reverse_proxy localhost:3000
+  encode {
+    gzip
+  }
+}
+
+localhost:3003 {
+  reverse_proxy localhost:3001
+  encode {
+    gzip
+  }
+}
+EOF
+
+# Start Docker containers (PostgreSQL and Electric SQL)
+docker compose up
+
 # Run development server
 bun run dev
+
+# Visit https://localhost:3003
 ```
 
 ## 📝 License
