@@ -4,9 +4,9 @@ A modern Discord clone built with Next.js 15, React 19, and TypeScript. This pro
 
 ## ✨ Showcase
 
-https://github.com/user-attachments/assets/2bb8238c-769f-4139-895b-40999b5533c8
+https://github.com/user-attachments/assets/cc837c63-c627-4d26-a22f-eba72359674d
 
-https://github.com/user-attachments/assets/44a0bd8b-87b7-4134-b194-20187de633d6
+https://github.com/user-attachments/assets/dda6b7d1-42cb-4a69-a3bf-7efe48cd3f0d
 
 ## 🚀 Tech Stack
 
