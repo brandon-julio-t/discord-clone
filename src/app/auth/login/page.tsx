@@ -94,7 +94,7 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="bg-background flex min-h-screen items-center justify-center">
       <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Login</CardTitle>
@@ -148,7 +148,7 @@ export default function LoginPage() {
               >
                 {form.formState.isSubmitting ? "Logging in..." : "Login"}
               </Button>
-              <p className="text-center text-sm text-gray-600">
+              <p className="text-muted-foreground text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/register"

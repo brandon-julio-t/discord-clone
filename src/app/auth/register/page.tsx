@@ -92,7 +92,7 @@ export default function RegisterPage() {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="bg-background flex min-h-screen items-center justify-center">
       <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Create an Account</CardTitle>
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                   ? "Creating account..."
                   : "Create account"}
               </Button>
-              <p className="text-center text-sm text-gray-600">
+              <p className="text-muted-foreground text-center text-sm">
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
