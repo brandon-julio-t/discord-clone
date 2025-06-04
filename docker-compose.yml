@@ -1,12 +1,12 @@
 services:
   postgres:
     image: postgres:alpine
-    container_name: discord-clone-postgres
+    container_name: slack-clone-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: discord-clone
+      POSTGRES_DB: slack-clone
     command: postgres -c wal_level=logical
     ports:
       - "5432:5432"
@@ -20,10 +20,10 @@ services:
 
   electric:
     image: electricsql/electric:latest
-    container_name: discord-clone-electric
+    container_name: slack-clone-electric
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/discord-clone
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/slack-clone
       # Not suitable for production. Only use insecure mode in development or if you've otherwise secured the Electric API.
       # See https://electric-sql.com/docs/guides/security
       ELECTRIC_INSECURE: true
@@ -34,5 +34,5 @@ services:
         condition: service_healthy
 
 volumes:
-  postgres_data:
-    name: discord-clone-postgres-data
+  postgres-data:
+    name: slack-clone-postgres-data

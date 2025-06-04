@@ -1,6 +1,6 @@
-# Discord Clone
+# Slack Clone
 
-A modern Discord clone built with Next.js 15, React 19, and TypeScript. This project replicates Discord's core features with a focus on real-time communication, server management, and user interactions.
+A modern Slack clone built with Next.js 15, React 19, and TypeScript. This project replicates Slack's core features with a focus on real-time communication, workspace management, and user interactions.
 
 ## ✨ Showcase
 
@@ -32,6 +32,7 @@ https://github.com/user-attachments/assets/dda6b7d1-42cb-4a69-a3bf-7efe48cd3f0d
 - Form validation and error handling
 - Optimized performance with Next.js 15
 - Full TypeScript support
+- Optimistic create message
 
 ## 🛠️ Development
 
@@ -42,7 +43,7 @@ bun install
 # Run database migrations
 bun prisma migrate dev
 
-# Setup Caddy reverse proxy to fix electric sql performance issue
+# Run Caddy reverse proxy to enable HTTP/2 to fix electric sql performance issue
 # https://electric-sql.com/docs/guides/troubleshooting#slow-shapes-mdash-why-are-my-shapes-slow-in-the-browser-in-local-development
 caddy run
 
