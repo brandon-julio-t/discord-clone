@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createMessageSchema = z.object({
-  textContent: z.string().min(1),
+  textContent: z.string().min(1).trim(),
   channelId: z.string(),
 });
 
