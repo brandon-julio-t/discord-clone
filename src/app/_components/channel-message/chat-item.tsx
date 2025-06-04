@@ -1,6 +1,5 @@
-import { useShape } from "@electric-sql/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ChannelMessage, User as PrismaUser } from "@prisma/client";
+import type { ChannelMessage } from "@prisma/client";
 import type { User as BetterAuthUser } from "better-auth";
 import { CheckIcon, PencilIcon, TrashIcon, XIcon } from "lucide-react";
 import React from "react";
@@ -28,24 +27,20 @@ import {
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
 import { updateMessageSchema } from "~/domains/message/schema";
-import { env } from "~/env";
+import { useAllUsersShape } from "~/domains/user/electric-sql-shapes";
 import { api } from "~/trpc/react";
 
 export const ChannelMessageChatItem: React.ComponentType<{
   message: ChannelMessage;
   user: BetterAuthUser;
 }> = ({ message, user }) => {
-  const usersShape = useShape<PrismaUser>({
-    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
-    params: {
-      table: `user`,
-      where: `"id" = '${message.createdByUserId}'`,
-    },
-  });
-
   const isMe = message.createdByUserId === user.id;
 
-  const messageUser = isMe ? user : usersShape.data.at(0);
+  const usersShape = useAllUsersShape();
+
+  const messageUser = isMe
+    ? user
+    : usersShape.data.find((user) => user.id === message.createdByUserId);
 
   const [isEditing, setIsEditing] = React.useState(false);
 

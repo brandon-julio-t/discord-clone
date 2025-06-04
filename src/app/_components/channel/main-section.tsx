@@ -1,13 +1,11 @@
-import { useShape } from "@electric-sql/react";
-import type { Channel } from "@prisma/client";
+import type { User } from "better-auth";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import { Separator } from "~/components/ui/separator";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Skeleton } from "~/components/ui/skeleton";
-import { env } from "~/env";
+import { useAllChannelsShape } from "~/domains/channel/electric-sql-shapes";
 import { ChannelChatSection } from "./chat-section";
-import type { User } from "better-auth";
 
 export const ChannelMainSection: React.ComponentType<{
   user: User;
@@ -16,15 +14,9 @@ export const ChannelMainSection: React.ComponentType<{
 
   const channelId = searchParams.get("channelId");
 
-  const { data, isLoading } = useShape<Channel>({
-    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
-    params: {
-      table: `"Channel"`,
-      where: `"id" = '${channelId}'`,
-    },
-  });
+  const { data, isLoading } = useAllChannelsShape();
 
-  const channel = data?.at(0);
+  const channel = data.find((channel) => channel.id === channelId);
 
   return (
     <main className="flex h-screen flex-1 flex-col">
