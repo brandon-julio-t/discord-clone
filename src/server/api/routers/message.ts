@@ -23,7 +23,10 @@ export const messageRouter = createTRPCRouter({
     .input(updateMessageSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.channelMessage.update({
-        where: { id: input.id },
+        where: {
+          id: input.id,
+          createdByUserId: ctx.session.user.id,
+        },
         data: {
           textContent: input.textContent,
         },
@@ -34,7 +37,10 @@ export const messageRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.channelMessage.delete({
-        where: { id: input.id },
+        where: {
+          id: input.id,
+          createdByUserId: ctx.session.user.id,
+        },
       });
     }),
 });
