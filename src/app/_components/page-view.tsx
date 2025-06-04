@@ -1,7 +1,5 @@
 "use client";
 
-import { useShape } from "@electric-sql/react";
-import type { Channel } from "@prisma/client";
 import type { User } from "better-auth";
 import {
   ChevronsUpDownIcon,
@@ -9,6 +7,7 @@ import {
   LogOutIcon,
   PlusIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
@@ -35,29 +34,32 @@ import {
   SidebarMenuSkeleton,
   SidebarProvider,
 } from "~/components/ui/sidebar";
+import { useAllChannelsShape } from "~/domains/channel/electric-sql-shapes";
 import { useIsMobile } from "~/hooks/use-mobile";
+import { authClient } from "~/lib/auth-client";
+import { CreateChannelForm } from "./channel/create-channel-form";
 import { ChannelMainSection } from "./channel/main-section";
 import { ChannelSidebarMenuItem } from "./channel/sidebar-menu-item";
-import { CreateChannelForm } from "./channel/create-channel-form";
-import { env } from "~/env";
-import { authClient } from "~/lib/auth-client";
-import { useRouter } from "next/navigation";
 
 export const PageView: React.ComponentType<{
   user: User;
 }> = ({ user }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
+  const [isMounted, setIsMounted] = React.useState(false);
 
   const [openCreateChannelDialog, setOpenCreateChannelDialog] =
     React.useState(false);
 
-  const { data, isLoading } = useShape<Channel>({
-    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
-    params: {
-      table: `"Channel"`,
-    },
-  });
+  const { data, isLoading } = useAllChannelsShape();
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <SidebarProvider>
