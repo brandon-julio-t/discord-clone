@@ -36,6 +36,8 @@ https://github.com/user-attachments/assets/dda6b7d1-42cb-4a69-a3bf-7efe48cd3f0d
 
 ## 🛠️ Development
 
+### Step 1: Setup Infra
+
 ```bash
 # setup .env
 # remember to setup BETTER_AUTH_SECRET, hint: try `npx nanoid` or something
@@ -47,7 +49,19 @@ bun install
 # Setup DB
 # Ideally prisma migrate dev, but for speed we use prisma db push
 bun prisma db push
+```
 
+### Step 2: Run the App
+
+#### Option A: Run `scripts/dev.sh`
+
+```bash
+scripts/dev.sh
+```
+
+#### Option B: Open 3 terminals and run these commands
+
+```bash
 # Run Caddy reverse proxy to enable HTTP/2 to fix electric sql performance issue
 # https://electric-sql.com/docs/guides/troubleshooting#slow-shapes-mdash-why-are-my-shapes-slow-in-the-browser-in-local-development
 caddy run
@@ -57,9 +71,9 @@ docker compose up
 
 # Run development server
 bun dev
-
-# Visit https://localhost:4001
 ```
+
+### Step 3: Visit https://localhost:4001
 
 ## 📝 License
 
