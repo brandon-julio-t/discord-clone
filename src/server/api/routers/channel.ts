@@ -29,8 +29,14 @@ export const channelRouter = createTRPCRouter({
   deleteChannel: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.channel.delete({
-        where: { id: input.id },
-      });
+      return ctx.db.$transaction([
+        ctx.db.channelMessage.deleteMany({
+          where: { channelId: input.id },
+        }),
+
+        ctx.db.channel.delete({
+          where: { id: input.id },
+        }),
+      ]);
     }),
 });
