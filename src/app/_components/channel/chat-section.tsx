@@ -1,6 +1,6 @@
-import { useShape } from "@electric-sql/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ChannelMessage } from "@prisma/client";
+import { matchBy, matchStream } from "@electric-sql/experimental";
+import { ulid } from "ulid";
 import type { User } from "better-auth";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -15,8 +15,8 @@ import {
 } from "~/components/ui/form";
 import { Separator } from "~/components/ui/separator";
 import { Textarea } from "~/components/ui/textarea";
+import { useAllChannelMessagesShape } from "~/domains/message/electric-sql-shapes";
 import { createMessageSchema } from "~/domains/message/schema";
-import { env } from "~/env";
 import { api } from "~/trpc/react";
 import { ChannelMessageChatItem } from "../channel-message/chat-item";
 
@@ -24,26 +24,60 @@ export const ChannelChatSection: React.ComponentType<{
   channelId: string;
   user: User;
 }> = ({ channelId, user }) => {
-  const messagesShape = useShape<ChannelMessage>({
-    url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
-    params: {
-      table: `"ChannelMessage"`,
-      where: `"channelId" = '${channelId}'`,
-    },
+  const messagesShape = useAllChannelMessagesShape({ channelId });
+
+  const [optimisticMessages, addOptimisticMessage] = React.useOptimistic<
+    typeof messagesShape.data,
+    { type: "add"; message: (typeof messagesShape.data)[number] }
+  >(messagesShape.data, (messages, action) => {
+    switch (action.type) {
+      case "add":
+        return messages.some((message) => message.id === action.message.id)
+          ? messages
+          : [...messages, action.message];
+
+      default:
+        return messages;
+    }
   });
+
+  const [nextId, setNextId] = React.useState(ulid());
 
   const form = useForm({
     resolver: zodResolver(createMessageSchema),
     values: {
+      id: nextId,
       channelId,
       textContent: "",
     },
   });
 
   const createMessageMutation = api.message.createMessage.useMutation({
-    onSuccess: () => {
+    onMutate: async (data) => {
+      setNextId(ulid());
+
+      React.startTransition(async () => {
+        addOptimisticMessage({
+          type: "add",
+          message: {
+            id: data.id,
+            textContent: data.textContent,
+            channelId,
+            createdByUserId: user.id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+          },
+        });
+
+        await matchStream(
+          messagesShape.stream,
+          ["insert"],
+          matchBy("id", data.id),
+        );
+      });
+
       form.reset();
-      toast.success("Message sent");
     },
     onError: (error) => {
       console.error(error);
@@ -54,8 +88,9 @@ export const ChannelChatSection: React.ComponentType<{
   });
 
   const onSubmit = form.handleSubmit(
-    async (data) => {
+    (data) => {
       createMessageMutation.mutate({
+        id: nextId,
         textContent: data.textContent,
         channelId,
       });
@@ -88,14 +123,14 @@ export const ChannelChatSection: React.ComponentType<{
   return (
     <Form {...form}>
       <section className="flex flex-1 flex-col justify-end overflow-y-auto">
-        {!messagesShape.data.length ? (
+        {!optimisticMessages.length ? (
           <div className="flex items-center justify-center py-4">
             <p className="text-muted-foreground text-sm">
               No messages yet. Be the first to send a message!
             </p>
           </div>
         ) : (
-          messagesShape.data.map((message) => (
+          optimisticMessages.map((message) => (
             <ChannelMessageChatItem
               key={message.id}
               message={message}
@@ -116,7 +151,6 @@ export const ChannelChatSection: React.ComponentType<{
               <FormControl>
                 <Textarea
                   {...field}
-                  disabled={createMessageMutation.isPending}
                   placeholder="Send a message..."
                   className="resize-none border-none shadow-none"
                 />
@@ -127,9 +161,7 @@ export const ChannelChatSection: React.ComponentType<{
         />
 
         <section className="flex justify-end">
-          <Button type="submit" disabled={createMessageMutation.isPending}>
-            {createMessageMutation.isPending ? "Sending..." : "Send"}
-          </Button>
+          <Button type="submit">Send</Button>
         </section>
       </form>
     </Form>

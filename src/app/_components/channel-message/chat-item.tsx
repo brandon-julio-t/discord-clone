@@ -28,6 +28,7 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { updateMessageSchema } from "~/domains/message/schema";
 import { useAllUsersShape } from "~/domains/user/electric-sql-shapes";
+import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 export const ChannelMessageChatItem: React.ComponentType<{
@@ -83,7 +84,12 @@ export const ChannelMessageChatItem: React.ComponentType<{
   });
 
   return (
-    <div className="hover:bg-muted/50 flex flex-row gap-2 p-3">
+    <div
+      className={cn(
+        "hover:bg-muted/50 flex flex-row gap-2 p-3",
+        deleteMessageMutation.isPending && "opacity-50",
+      )}
+    >
       <Avatar>
         <AvatarImage src={messageUser?.image ?? ""} />
         <AvatarFallback>

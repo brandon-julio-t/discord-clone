@@ -12,6 +12,7 @@ export const messageRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return ctx.db.channelMessage.create({
         data: {
+          id: input.id,
           textContent: input.textContent,
           channelId: input.channelId,
           createdByUserId: ctx.session.user.id,
