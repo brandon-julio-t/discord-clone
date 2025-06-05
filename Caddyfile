@@ -1,13 +1,9 @@
 localhost:4000 {
   reverse_proxy localhost:3000
-  encode {
-    gzip
-  }
+  encode
 }
 
 localhost:4001 {
   reverse_proxy localhost:3001
-  encode {
-    gzip
-  }
+  encode
 }
