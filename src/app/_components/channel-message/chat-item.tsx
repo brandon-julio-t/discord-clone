@@ -25,6 +25,7 @@ import {
   FormItem,
   FormMessage,
 } from "~/components/ui/form";
+import { Skeleton } from "~/components/ui/skeleton";
 import { Textarea } from "~/components/ui/textarea";
 import { updateMessageSchema } from "~/domains/message/schema";
 import { useAllUsersShape } from "~/domains/user/electric-sql-shapes";
@@ -39,9 +40,9 @@ export const ChannelMessageChatItem: React.ComponentType<{
 
   const usersShape = useAllUsersShape();
 
-  const messageUser = isMe
-    ? user
-    : usersShape.data.find((user) => user.id === message.createdByUserId);
+  const messageUser = usersShape.data.find(
+    (user) => user.id === message.createdByUserId,
+  );
 
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -99,9 +100,13 @@ export const ChannelMessageChatItem: React.ComponentType<{
 
       <div className="group relative flex w-full flex-col gap-2">
         <section className="flex flex-row flex-wrap items-baseline gap-2">
-          <p className="text-primary text-sm leading-(--text-base)">
-            {messageUser?.name}
-          </p>
+          {usersShape.isLoading ? (
+            <Skeleton className="h-(--text-base) w-24" />
+          ) : (
+            <p className="text-primary text-sm leading-(--text-base)">
+              {messageUser?.name}
+            </p>
+          )}
 
           <p className="text-muted-foreground text-xs leading-(--text-base)">
             {new Date(message.createdAt).toLocaleString(undefined, {
