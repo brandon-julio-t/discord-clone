@@ -11,7 +11,8 @@ export function useAllChannelMessagesShape({
     url: `${env.NEXT_PUBLIC_APP_URL}/api/electric-sql`,
     params: {
       table: `"ChannelMessage"`,
-      where: `"channelId" = '${channelId}'`,
+      where: `"channelId" = $1`,
+      params: { 1: channelId },
     },
   });
 }
