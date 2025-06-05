@@ -19,6 +19,7 @@ import { useAllChannelMessagesShape } from "~/domains/message/electric-sql-shape
 import { createMessageSchema } from "~/domains/message/schema";
 import { api } from "~/trpc/react";
 import { ChannelMessageChatItem } from "../channel-message/chat-item";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export const ChannelChatSection: React.ComponentType<{
   channelId: string;
@@ -122,22 +123,30 @@ export const ChannelChatSection: React.ComponentType<{
 
   return (
     <Form {...form}>
-      <section className="flex flex-1 flex-col justify-end overflow-y-auto">
-        {!optimisticMessages.length ? (
-          <div className="flex items-center justify-center py-4">
-            <p className="text-muted-foreground text-sm">
-              No messages yet. Be the first to send a message!
-            </p>
-          </div>
-        ) : (
-          optimisticMessages.map((message) => (
-            <ChannelMessageChatItem
-              key={message.id}
-              message={message}
-              user={user}
-            />
-          ))
-        )}
+      <section className="flex min-h-0 flex-1 flex-col overflow-auto">
+        <div className="flex flex-col">
+          {messagesShape.isLoading ? (
+            <div>
+              {Array.from({ length: 10 }).map((_, idx) => (
+                <Skeleton key={idx} className="m-3 h-16" />
+              ))}
+            </div>
+          ) : !optimisticMessages.length ? (
+            <div className="flex items-center justify-center py-4">
+              <p className="text-muted-foreground text-sm">
+                No messages yet. Be the first to send a message!
+              </p>
+            </div>
+          ) : (
+            optimisticMessages.map((message) => (
+              <ChannelMessageChatItem
+                key={message.id}
+                message={message}
+                user={user}
+              />
+            ))
+          )}
+        </div>
       </section>
 
       <Separator />
