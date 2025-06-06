@@ -124,7 +124,7 @@ export const ChannelChatSection: React.ComponentType<{
   return (
     <Form {...form}>
       <section className="flex min-h-0 flex-1 flex-col overflow-auto">
-        <div className="flex flex-col">
+        <div className="flex flex-1 flex-col justify-end">
           {messagesShape.isLoading ? (
             <div>
               {Array.from({ length: 10 }).map((_, idx) => (
