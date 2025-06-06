@@ -52,6 +52,17 @@ export const ChannelChatSection: React.ComponentType<{
     estimateSize: () => 45,
   });
 
+  const [shouldScrollToBottom, setShouldScrollToBottom] = React.useState(true);
+
+  React.useEffect(
+    function scrollToBottomOnNewMessageAndNotReadingOldMessage() {
+      if (shouldScrollToBottom) {
+        virtualizer.scrollToIndex(count - 1);
+      }
+    },
+    [count, shouldScrollToBottom, virtualizer],
+  );
+
   const items = virtualizer.getVirtualItems();
 
   const [nextId, setNextId] = React.useState(ulid());
@@ -137,6 +148,16 @@ export const ChannelChatSection: React.ComponentType<{
     <Form {...form}>
       <section
         ref={parentRef}
+        onScroll={(e) => {
+          const scrollTop = e.currentTarget.scrollTop;
+          const clientHeight = e.currentTarget.clientHeight;
+          const scrollHeight = e.currentTarget.scrollHeight;
+          const threshold = 24;
+          const shouldScrollToBottom =
+            scrollTop + clientHeight >= scrollHeight - threshold;
+
+          setShouldScrollToBottom(shouldScrollToBottom);
+        }}
         className="flex min-h-0 flex-1 flex-col overflow-auto contain-strict"
       >
         <div className="flex flex-1 flex-col justify-end">
