@@ -20,6 +20,7 @@ import { createMessageSchema } from "~/domains/message/schema";
 import { api } from "~/trpc/react";
 import { ChannelMessageChatItem } from "../channel-message/chat-item";
 import { Skeleton } from "~/components/ui/skeleton";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const ChannelChatSection: React.ComponentType<{
   channelId: string;
@@ -41,6 +42,17 @@ export const ChannelChatSection: React.ComponentType<{
         return messages;
     }
   });
+
+  const parentRef = React.useRef<HTMLDivElement>(null);
+
+  const count = optimisticMessages.length;
+  const virtualizer = useVirtualizer({
+    count,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 45,
+  });
+
+  const items = virtualizer.getVirtualItems();
 
   const [nextId, setNextId] = React.useState(ulid());
 
@@ -123,7 +135,10 @@ export const ChannelChatSection: React.ComponentType<{
 
   return (
     <Form {...form}>
-      <section className="flex min-h-0 flex-1 flex-col overflow-auto">
+      <section
+        ref={parentRef}
+        className="flex min-h-0 flex-1 flex-col overflow-auto contain-strict"
+      >
         <div className="flex flex-1 flex-col justify-end">
           {messagesShape.isLoading ? (
             <div>
@@ -138,13 +153,37 @@ export const ChannelChatSection: React.ComponentType<{
               </p>
             </div>
           ) : (
-            optimisticMessages.map((message) => (
-              <ChannelMessageChatItem
-                key={message.id}
-                message={message}
-                user={user}
-              />
-            ))
+            <div
+              style={{
+                height: virtualizer.getTotalSize(),
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${items[0]?.start ?? 0}px)`,
+                }}
+              >
+                {items.map((virtualRow) => (
+                  <div
+                    key={virtualRow.key}
+                    data-index={virtualRow.index}
+                    ref={virtualizer.measureElement}
+                  >
+                    <ChannelMessageChatItem
+                      key={optimisticMessages[virtualRow.index]!.id}
+                      message={optimisticMessages[virtualRow.index]!}
+                      user={user}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </section>

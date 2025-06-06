@@ -37,6 +37,7 @@
         "@radix-ui/react-tooltip": "^1.2.7",
         "@t3-oss/env-nextjs": "^0.12.0",
         "@tanstack/react-query": "^5.69.0",
+        "@tanstack/react-virtual": "^3.13.9",
         "@trpc/client": "^11.0.0",
         "@trpc/react-query": "^11.0.0",
         "@trpc/server": "^11.0.0",
@@ -428,6 +429,10 @@
     "@tanstack/query-core": ["@tanstack/query-core@5.80.1", "", {}, "sha512-C2EuI3PMh4Oo7pmi1lib/1FYYhBuAFjR2K3B3rkRt68LBrPb1DN3twsnEtxlTZlq6JXr1QfWqKTwOeC+Z5gI7Q=="],
 
     "@tanstack/react-query": ["@tanstack/react-query@5.80.1", "", { "dependencies": { "@tanstack/query-core": "5.80.1" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-KLsbwd1so6PGrieFQS1Y7rZ/YG0PShGmTF2YM7RRVw+u2TxtzHlC18wDztP1sQeyQts75DSDZDQI8aj1kA7pnA=="],
+
+    "@tanstack/react-virtual": ["@tanstack/react-virtual@3.13.9", "", { "dependencies": { "@tanstack/virtual-core": "3.13.9" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-SPWC8kwG/dWBf7Py7cfheAPOxuvIv4fFQ54PdmYbg7CpXfsKxkucak43Q0qKsxVthhUJQ1A7CIMAIplq4BjVwA=="],
+
+    "@tanstack/virtual-core": ["@tanstack/virtual-core@3.13.9", "", {}, "sha512-3jztt0jpaoJO5TARe2WIHC1UQC3VMLAFUW5mmMo0yrkwtDB2AQP0+sh10BVUpWrnvHjSLvzFizydtEGLCJKFoQ=="],
 
     "@trpc/client": ["@trpc/client@11.2.0", "", { "peerDependencies": { "@trpc/server": "11.2.0", "typescript": ">=5.7.2" } }, "sha512-uGehc0QvK3+UmTZb1KmIwvMLtRW0I5ykiYQHA1Yqa7yHPzpF9zw7mbwna6gqZAgjclt0/S6jwxAMJizoaP8uqQ=="],
 
